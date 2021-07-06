@@ -29,5 +29,3 @@ function App() {
 }
 
 export default App;
-
-// https://ui.dev/react-router-v4-pass-props-to-components/

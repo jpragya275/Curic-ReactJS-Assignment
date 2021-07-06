@@ -11,9 +11,6 @@ export const Section = (props) => {
             <div className="container" key={val.index}>
                 {console.log('value ', val.index)}
                 {console.log('snameerror ', val.SnameError)}
-                {/* {console.log('sectionname', val.sectionName)}
-                {console.log('desc ', val.description)}
-                {console.log('file', val.file)} */}
                 <br />
                 <Form.Group onChange={props.change}>
                     <Form.Row>

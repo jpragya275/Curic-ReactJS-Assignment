@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { Section } from './Section';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
-import SimpleReactValidator from 'simple-react-validator';
-import { ViewPage } from './ViewPage';
+import { Redirect } from 'react-router-dom';
 
 const StyledButton = withStyles({
   root: {
@@ -22,7 +20,6 @@ const StyledButton = withStyles({
   }
 })(Button);
 
-// export const AddSection = ({ addSection }) =>
 export class AddSection extends React.Component {
   state = {
     section: [
@@ -36,18 +33,14 @@ export class AddSection extends React.Component {
       }
     ],
     projectName: '',
-    PnameError: ''
+    PnameError: '',
+    boolViewPage: false,
+    redirect: null
   };
 
-  // handleChange = this.handleChange.bind(this);
-  // handleSubmit = this.handleSubmit.bind(this);
-  // }
-
   handleChange = (e) => {
-    // let { section, projectName } = this.state;
     let section = [...this.state.section];
     if (['sectionName', 'description', 'file'].includes(e.target.name)) {
-      // let section = [...this.state.section];
       if (e.target.name === 'file') {
         console.log('in creating url', e.target.files[0])
         section[e.target.dataset.id][e.target.name] = URL.createObjectURL(e.target.files[0]);
@@ -56,9 +49,6 @@ export class AddSection extends React.Component {
         section[e.target.dataset.id][e.target.name] = e.target.value;
       }
     } else if (e.target.name === 'projectName') {
-      // if (e.target.value === '') {
-      //   alert('Project Name cannot be empty!');
-      // }
       this.setState({ [e.target.name]: e.target.value });
 
     }
@@ -91,7 +81,6 @@ export class AddSection extends React.Component {
   }
 
   formValidation = () => {
-    // let { section, projectName } = this.state;
     let snameerror = '';
     let sdescerror = '';
     let pnameerror = '';
@@ -154,15 +143,12 @@ export class AddSection extends React.Component {
       this.setState({ PnameError: '' });
       this.setState({ SnameError: '' });
       this.setState({ SdescError: '' });
-      // console.log('logs', this.state.projectName);
-      // this.state.section.map((val, idx) => {
-      //   console.log('sectionName', val.sectionName);
-      //   console.log('description', val.description);
-      //   console.log('file', val.file);
-      // });
+
+      console.log('INVIEWPAGERETURN');
+      this.setState({ boolViewPage: true });
+      this.setState({ redirect: '/ViewPage' });
     }
   };
-
 
   render() {
     let { section, projectName } = this.state;
@@ -194,7 +180,6 @@ export class AddSection extends React.Component {
               </Form.Row>
             </Form.Group>
             <Section
-              // add={this.addNewRow}
               change={this.handleChange}
               delete={this.clickOnDelete.bind(this)}
               section={section}
@@ -202,32 +187,23 @@ export class AddSection extends React.Component {
             <div style={{ textAlign: 'center', color: 'red', fontSize: 20 }}>{this.state.SnameError}</div>
             <div style={{ textAlign: 'center', color: 'red', fontSize: 20 }}>{this.state.SdescError}</div>
             <StyledButton onClick={this.addNewRow}>Add Section</StyledButton>
-            {/* <Link
-              to={{
-                pathname: '/viewpage',
-                state: {
-                  projectName: this.state.projectName,
-                  section: this.state.section,
-                  // change: this.handleChange      //Cannot push history error
-                }
-              }}
-            > */}
             <StyledButton
               style={{ float: 'right' }}
               type='submit'
               onClick={this.handleSubmit}
-            // path='/viewpage'
             >
               View
             </StyledButton>
-            {/* </Link> */}
-            {/* {Object.keys(errors).map((key) => {
-              return <div key={key}>{(errors[key])}</div>
-            })} */}
           </Form>
+          {this.state.redirect ? (<Redirect to={{
+            pathname: this.state.redirect,
+            state: {
+              projectName: this.state.projectName,
+              section: this.state.section
+            }
+          }} />) : null}
         </div>
       </>
     );
   }
 }
-// export class AddSection {}

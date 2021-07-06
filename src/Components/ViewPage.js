@@ -1,9 +1,7 @@
 import React from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-
-
 
 const StyledButton = withStyles({
     root: {
@@ -14,8 +12,6 @@ const StyledButton = withStyles({
         borderRadius: '25px',
         border: '3px solid grey',
         cursor: 'pointer'
-        // padding: '0 30px',
-        // boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
     },
     label: {
         textTransform: 'capitalize'
@@ -23,7 +19,6 @@ const StyledButton = withStyles({
 })(Button);
 
 export const ViewPage = () => {
-    // const history = useHistory();
     const location = useLocation();
     const {
         projectName,
@@ -38,6 +33,7 @@ export const ViewPage = () => {
             <div className="container my-3" style={{ textAlign: 'center' }}>
                 <h1>{projectName}</h1>
                 <br /><br />
+                {/* {console.log(', projectName)} */}
 
                 {section.map((val, idx) => {
                     let sectionName = `sectionName-${idx}`,
@@ -57,25 +53,18 @@ export const ViewPage = () => {
                     )
                 })}
                 <br /><br />
-                {/* <Link
+                <Link
                     to={{
                         pathname: '/',
-                        state: {
-                            projectName: projectName,
-                            section: section,
-                            // change: this.handleChange
-                        }
                     }}
-                > */}
-                <StyledButton
-                    // style={{ float: 'right' }}
-                    type='submit'
-                // onClick={() => history.goBack()}
-                // path='/viewpage'
                 >
-                    Edit
-                </StyledButton>
-                {/* </Link> */}
+                    <StyledButton
+                        type='submit'
+                        path='/'
+                    >
+                        Edit
+                    </StyledButton>
+                </Link>
             </div>
         </div>
     )
