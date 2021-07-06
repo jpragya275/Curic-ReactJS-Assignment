@@ -62,10 +62,11 @@ export class AddSection extends React.Component {
         section[e.target.dataset.id][e.target.name] = e.target.value;
       }
     } else if (e.target.name === 'projectName') {
-      if (e.target.value === '') {
-        alert('Project Name cannot be empty!');
-      }
+      // if (e.target.value === '') {
+      //   alert('Project Name cannot be empty!');
+      // }
       this.setState({ [e.target.name]: e.target.value });
+
     }
   };
   addNewRow = () => {
@@ -96,20 +97,21 @@ export class AddSection extends React.Component {
   }
 
   formValidation = () => {
-    // let { section, projectName, PnameError } = this.state;
-    // let SnameError = '';
-    // let SdescError = '';
-    // let PnameError = '';
+    // let { section, projectName } = this.state;
+    let SnameError = '';
+    let SdescError = '';
+    let PnameError = '';
 
-    // if (this.projectName.trim().length === 0) {
-    //   PnameError = "The Project Name cannot be empty!";
-    // }
+    if (this.state.projectName.trim().length === 0) {
+      PnameError = "The Project Name cannot be empty!";
+    }
 
-    // if (PnameError) {
-    //   this.setState({ PnameError });
-    // }
+    if (PnameError) {
+      this.setState({ PnameError });
+      return false;
+    }
 
-    // this.section.map((val) => {
+    // this.state.section.map((val) => {
     //   if (val.sectionName.trim().length === 0) {
     //     SnameError = "The Section Name cannot be empty!";
     //   }
@@ -146,10 +148,12 @@ export class AddSection extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    console.log('before fv');
     const isValid = this.formValidation();
-
+    console.log('after fv');
     // console.log('logs', e.target.projectName.value);
     if (isValid) {
+      this.setState({ PnameError: '' });
       console.log('logs', this.state.projectName);
       this.state.section.map((val, idx) => {
         console.log('sectionName', val.sectionName);
@@ -196,25 +200,25 @@ export class AddSection extends React.Component {
               section={section}
             />
             <StyledButton onClick={this.addNewRow}>Add Section</StyledButton>
-            <Link
+            {/* <Link
               to={{
                 pathname: '/viewpage',
                 state: {
                   projectName: this.state.projectName,
                   section: this.state.section,
-                  // change: this.handleChange
+                  // change: this.handleChange      //Cannot push history error
                 }
               }}
+            > */}
+            <StyledButton
+              style={{ float: 'right' }}
+              type='submit'
+              onClick={this.handleSubmit}
+            // path='/viewpage'
             >
-              <StyledButton
-                style={{ float: 'right' }}
-                type='submit'
-                // onClick={this.handleSubmit}
-                path='/viewpage'
-              >
-                View
-              </StyledButton>
-            </Link>
+              View
+            </StyledButton>
+            {/* </Link> */}
             {/* {Object.keys(errors).map((key) => {
               return <div key={key}>{(errors[key])}</div>
             })} */}
