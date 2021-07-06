@@ -1,8 +1,5 @@
-// import { render } from '@testing-library/react';
-// import { recomposeColor } from '@material-ui/core';
 import React, { useState } from 'react';
 import { Form, Col } from 'react-bootstrap';
-// import styled from 'styled-components';
 import { Section } from './Section';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
@@ -19,8 +16,6 @@ const StyledButton = withStyles({
     borderRadius: '25px',
     border: '3px solid grey',
     cursor: 'pointer'
-    // padding: '0 30px',
-    // boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
   },
   label: {
     textTransform: 'capitalize'
@@ -56,7 +51,6 @@ export class AddSection extends React.Component {
       if (e.target.name === 'file') {
         console.log('in creating url', e.target.files[0])
         section[e.target.dataset.id][e.target.name] = URL.createObjectURL(e.target.files[0]);
-        // section[e.target.dataset.id][e.target.name] = URL.createObjectURL(e.target.files[0]);
       }
       else if (e.target.name === 'sectionName' || e.target.name === 'description') {
         section[e.target.dataset.id][e.target.name] = e.target.value;
@@ -98,51 +92,54 @@ export class AddSection extends React.Component {
 
   formValidation = () => {
     // let { section, projectName } = this.state;
-    let SnameError = '';
-    let SdescError = '';
-    let PnameError = '';
+    let snameerror = '';
+    let sdescerror = '';
+    let pnameerror = '';
 
     if (this.state.projectName.trim().length === 0) {
-      PnameError = "The Project Name cannot be empty!";
+      pnameerror = "The Project Name cannot be empty!";
     }
 
-    if (PnameError) {
-      this.setState({ PnameError });
+    if (pnameerror) {
+      this.setState({ PnameError: pnameerror });
       return false;
     }
+    else {
+      this.setState({ PnameError: '' });
+    }
 
-    // this.state.section.map((val) => {
-    //   if (val.sectionName.trim().length === 0) {
-    //     SnameError = "The Section Name cannot be empty!";
-    //   }
-    //   if (SnameError) {
-    //     this.setState({ SnameError });
-    //   }
-    // })
+    let sectionValid = true;
+    this.state.section.map((val) => {
+      console.log('INMAP', val.sectionName.trim().length)
+      if (val.sectionName.trim().length === 0) {
+        console.log('ERROR')
+        snameerror = "The Section Name cannot be empty!";
+      }
+      if (snameerror) {
+        console.log('YAHABAAGYA')
+        this.setState({ SnameError: snameerror });
+        sectionValid = false;
+        return false;
+      }
+      else {
+        this.setState({ SnameError: '' });
+      }
+      if (val.description.trim().length === 0) {
+        console.log('ERROR')
+        sdescerror = "The Section Description cannot be empty!";
+      }
+      if (sdescerror) {
+        this.setState({ SdescError: sdescerror });
+        sectionValid = false;
+        return false;
+      }
+      else {
+        this.setState({ SdescError: '' });
+      }
+    })
+    console.log('sectionValid ', sectionValid);
 
-    // let { section, projectName } = this.state;
-    // let isValid = true;
-    // const errors = {};
-    // if (projectName.trim().length === 0) {
-    //   errors.emptyProjectName = "The Project Name cannot be empty!";
-    //   isValid = false;
-    // }
-
-    // section.map((val, idx) => {
-    //   let sectionName = `sectionName-${idx}`,
-    //     description = `description-${idx}`;
-    //   if (val.sectionName.trim().length === 0 || val.description.trim().length === 0)
-    //     return (
-    //       <div key={val.index}>
-    //         errors.emptySection = "The Section Name and Description cannot be empty!";
-    //         isValid = false;
-    //       </ div>
-    //     )
-    // })
-
-
-
-    // this.setState({ errors });
+    if (sectionValid === false) { return false; }
     return true;
   }
 
@@ -152,14 +149,17 @@ export class AddSection extends React.Component {
     const isValid = this.formValidation();
     console.log('after fv');
     // console.log('logs', e.target.projectName.value);
-    if (isValid) {
+    console.log('valid', isValid);
+    if (isValid === true) {
       this.setState({ PnameError: '' });
-      console.log('logs', this.state.projectName);
-      this.state.section.map((val, idx) => {
-        console.log('sectionName', val.sectionName);
-        console.log('description', val.description);
-        console.log('file', val.file);
-      });
+      this.setState({ SnameError: '' });
+      this.setState({ SdescError: '' });
+      // console.log('logs', this.state.projectName);
+      // this.state.section.map((val, idx) => {
+      //   console.log('sectionName', val.sectionName);
+      //   console.log('description', val.description);
+      //   console.log('file', val.file);
+      // });
     }
   };
 
@@ -199,6 +199,8 @@ export class AddSection extends React.Component {
               delete={this.clickOnDelete.bind(this)}
               section={section}
             />
+            <div style={{ textAlign: 'center', color: 'red', fontSize: 20 }}>{this.state.SnameError}</div>
+            <div style={{ textAlign: 'center', color: 'red', fontSize: 20 }}>{this.state.SdescError}</div>
             <StyledButton onClick={this.addNewRow}>Add Section</StyledButton>
             {/* <Link
               to={{

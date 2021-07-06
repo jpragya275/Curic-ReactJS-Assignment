@@ -5,10 +5,12 @@ export const Section = (props) => {
     return props.section.map((val, idx) => {
         let sectionName = `sectionName-${idx}`,
             description = `description-${idx}`,
-            file = `file-${idx}`
+            file = `file-${idx}`,
+            SnameError = `SnameError-${idx}`
         return (
             <div className="container" key={val.index}>
                 {console.log('value ', val.index)}
+                {console.log('snameerror ', val.SnameError)}
                 {/* {console.log('sectionname', val.sectionName)}
                 {console.log('desc ', val.description)}
                 {console.log('file', val.file)} */}
@@ -30,6 +32,7 @@ export const Section = (props) => {
                                 placeholder='Enter section name here...'
                             />
                         </Col>
+                        {/* <div style={{ textAlign: 'center', color: 'red', fontSize: 20 }}>{val.SnameError}</div> */}
                     </Form.Row>
                 </Form.Group>
                 <br />
